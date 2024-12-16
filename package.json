@@ -1,11 +1,33 @@
 {
-  "name": "120dayscrm_backend",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Ajay Goyal",
-  "license": "ISC",
-  "description": ""
+    "name": "120DaysCRM_Backend",
+    "version": "1.0.0",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "pm2 start index.js --name 120DaysCRM_Backend",
+        "restart": "pm2 restart 120DaysCRM_Backend",
+        "stop": "pm2 stop 120DaysCRM_Backend",
+        "logs": "pm2 logs 120DaysCRM_Backend",
+        "delete": "pm2 delete 120DaysCRM_Backend",
+        "dev": "nodemon index.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {
+        "axios": "^1.7.7",
+        "bcrypt": "^5.1.1",
+        "body-parser": "^1.20.2",
+        "cookie-parser": "^1.4.6",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
+        "express": "^4.19.2",
+        "http": "^0.0.1-security",
+        "jsonwebtoken": "^9.0.2",
+        "mongoose": "^8.6.1",
+        "morgan": "^1.10.0",
+        "pm2": "^5.4.2"
+    }
 }

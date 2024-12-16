@@ -1,0 +1,63 @@
+import mongoose from "mongoose";
+
+const leadSchema = new mongoose.Schema(
+    {
+        fullName: {
+            type: String,
+            required: true,
+        },
+        pan: {
+            type: String,
+            required: true,
+        },
+        mobile: {
+            type: String,
+            required: true,
+        },
+        personalEmail: {
+            type: String,
+            required: true,
+        },
+        businessName: {
+            type: String,
+            required: true,
+        },
+        propertyType: {
+            type: String,
+            required: true,
+            enum: ["own", "rental"],
+        },
+        gstNo: {
+            type: String,
+            required: true,
+        },
+        loanAmount: {
+            type: Number,
+            required: true,
+        },
+        turnover: {
+            type: Number,
+            required: true,
+        },
+        pinCode: {
+            type: Number,
+            required: true,
+        },
+        state: {
+            type: String,
+            required: true,
+        },
+        city: {
+            type: String,
+            required: true,
+        },
+        isAadhaarVerified: { type: Boolean, default: false },
+        isAadhaarDetailsSaved: { type: Boolean, default: false },
+        isPanVerified: { type: Boolean, default: false },
+        sendToAllCloud: { type: Boolean, default: false },
+    },
+    { timestamps: true }
+);
+
+const Lead = mongoose.model("Lead", leadSchema);
+export default Lead;
