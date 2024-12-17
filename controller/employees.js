@@ -1,6 +1,6 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import Employee from "../model/Employee.js";
-import { generateToken } from "../utils/generateToken.js";
+import generateToken from "../utils/generateToken.js";
 
 // @desc Register Employee
 // @route POST /api/employees
@@ -32,7 +32,7 @@ export const register = asyncHandler(async (req, res) => {
         generateToken(res, employee._id);
         return res.status(201).json({
             _id: employee._id,
-            name: employee.fName + " " + employee.lName,
+            name: employee.fullName,
             email: employee.email,
         });
     }
@@ -60,7 +60,7 @@ export const login = asyncHandler(async (req, res) => {
 
         res.status(200).json({
             _id: employee._id,
-            name: employee.fName + " " + employee.lName,
+            name: employee.fullName,
             email: employee.email,
         });
     } else {
