@@ -55,6 +55,12 @@ const leadSchema = new mongoose.Schema(
         isAadhaarDetailsSaved: { type: Boolean, default: false },
         isPanVerified: { type: Boolean, default: false },
         sendToAllCloud: { type: Boolean, default: false },
+        source: {
+            type: String,
+            required: true,
+            enum: ["website", "bulk", "landingPage", "whatsapp", "app"],
+            default: "website",
+        },
     },
     { timestamps: true }
 );

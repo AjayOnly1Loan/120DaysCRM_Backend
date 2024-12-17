@@ -17,10 +17,10 @@ const app = express();
 var corsOption = {
     origin: [
         "http://localhost:5173",
-        "https://fintechbasket.com",
-        "http://www.fintechbasket.com",
-        "https://speedoloan.com",
-        "https://143.110.182.3",
+        "https://120daysfinance.com",
+        "http://www.120daysfinance.com",
+        "https://crm.120daysfinance.com",
+        "https://www.crm.120daysfinance.com",
     ],
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
