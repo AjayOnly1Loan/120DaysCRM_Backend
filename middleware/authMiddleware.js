@@ -1,7 +1,6 @@
 import asyncHandler from "./asyncHandler.js";
 import jwt from "jsonwebtoken";
 import Employee from "../model/Employee.js";
-import Lead from "../model/Lead.js";
 
 // Protected Routes
 const protect = asyncHandler(async (req, res, next) => {

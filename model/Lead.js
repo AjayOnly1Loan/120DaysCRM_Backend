@@ -10,6 +10,10 @@ const leadSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        aadhaar: {
+            type: String,
+            require: true,
+        },
         mobile: {
             type: String,
             required: true,

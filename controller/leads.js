@@ -8,6 +8,7 @@ export const createLead = asyncHandler(async (req, res) => {
     const {
         fullName,
         pan,
+        aadhaar,
         mobile,
         personalEmail,
         businessName,
@@ -23,6 +24,7 @@ export const createLead = asyncHandler(async (req, res) => {
     const newLead = await Lead.create({
         fullName,
         pan,
+        aadhaar,
         mobile,
         personalEmail,
         businessName,
