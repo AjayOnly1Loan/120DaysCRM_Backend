@@ -1,22 +1,7 @@
 import express from "express";
 const router = express.Router();
-import {
-    login,
-    logout,
-    register,
-    getAllEmployees,
-    getAnEmployee,
-    addAdminBanks,
-    adminBanks,
-} from "../Controllers/employees.js";
-import { protect, admin } from "../middleware/authMiddleware.js";
-
-router.route("/").get(protect, admin, getAllEmployees);
-router
-    .route("/admin/banks")
-    .get(protect, adminBanks)
-    .post(protect, admin, addAdminBanks);
-router.route("/:id").get(protect, getAnEmployee);
+import { login, logout, register } from "../controller/employees.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 // Route to register a new user
 router.route("/register").post(register);

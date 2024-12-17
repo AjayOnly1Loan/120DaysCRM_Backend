@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import "dotenv/config.js";
 import morgan from "morgan";
 import leadRouter from "./routes/LeadsRouter.js";
+import employeeRouter from "./routes/EmployeesRouter.js";
 import { notFound, errorHandler } from "./middleware/errorHandler.js";
 
 const PORT = process.env.PORT || 3000;
@@ -41,6 +42,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/leads", leadRouter); // Use the lead routes
+app.use("/api/employees", employeeRouter); // Use the employee routes
 
 // Error handling middleware
 app.use(notFound);

@@ -1,5 +1,5 @@
 import asyncHandler from "../middleware/asyncHandler.js";
-import Lead from "../models/Leads.js";
+import Lead from "../model/Lead.js";
 
 // @desc Create loan leads
 // @route POST /api/leads

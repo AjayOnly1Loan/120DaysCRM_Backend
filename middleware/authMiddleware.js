@@ -1,7 +1,7 @@
 import asyncHandler from "./asyncHandler.js";
 import jwt from "jsonwebtoken";
-import Employees from "../models/Employees.js";
-import Lead from "../models/Leads.js";
+import Employee from "../model/Employee.js";
+import Lead from "../model/Lead.js";
 
 // Protected Routes
 const protect = asyncHandler(async (req, res, next) => {
@@ -10,7 +10,7 @@ const protect = asyncHandler(async (req, res, next) => {
     if (token) {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            req.employee = await Employees.findById(decoded.id).select(
+            req.employee = await Employee.findById(decoded.id).select(
                 "-password"
             );
 
