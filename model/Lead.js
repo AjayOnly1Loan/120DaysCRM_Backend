@@ -33,7 +33,6 @@ const leadSchema = new mongoose.Schema(
         },
         gstNo: {
             type: String,
-            required: true,
         },
         loanAmount: {
             type: Number,
