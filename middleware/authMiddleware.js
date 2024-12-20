@@ -33,47 +33,48 @@ const protect = asyncHandler(async (req, res, next) => {
     }
 });
 
-// function requireSessionToken(req, res, next) {
-//     if (!req.session.token) {
-//         res.status(403);
-//         throw new Error("No token found!!!");
+function requireSessionToken(req, res, next) {
+    if (!req.session.token) {
+        console.log("session: ", req.session);
 
-//         // return res.redirect("/login"); // Redirect to login if no token
-//     }
-//     next();
-// }
+        res.status(403);
+        throw new Error("No token found!!!");
 
-// const aadhaarMiddleware = asyncHandler(async (req, res, next) => {
-//     const token = req.session.token;
+        // return res.redirect("/login"); // Redirect to login if no token
+    }
+    next();
+}
 
-//     if (!token) {
-//         res.status(401);
-//         throw new Error("Unathorized, no token found!!");
-//     }
+const aadhaarMiddleware = asyncHandler(async (req, res, next) => {
+    const token = req.session.token;
 
-//     try {
-//         // Decode the token using the secret
-//         // const decoded = jwt.verify(id, process.env.AADHAAR_LINK_SECRET);
-//         const decoded = jwt.verify(token, process.env.AADHAAR_LINK_SECRET);
+    if (!token) {
+        res.status(401);
+        throw new Error("Unathorized, no token found!!");
+    }
 
-//         // Fetch the user lead using the decoded token's `_id`
-//         const userLead = await Lead.findById(decoded._id);
+    try {
+        // Decode the token using the secret
+        const decoded = jwt.verify(token, process.env.AADHAAR_LINK_SECRET);
 
-//         if (!userLead) {
-//             res.status(404);
-//             throw new Error("User lead not found");
-//         }
+        // Fetch the user lead using the decoded token's `_id`
+        const userLead = await Lead.findById(decoded._id);
 
-//         // Attach the lead ID to the `req` object for downstream use
-//         req.userLeadId = userLead._id.toString();
+        if (!userLead) {
+            res.status(404);
+            throw new Error("User lead not found");
+        }
 
-//         // Call the next middleware or route handler
-//         next();
-//     } catch (error) {
-//         res.status(401);
-//         throw new Error("Not Authorized! Invalid token");
-//     }
-// });
+        // Attach the lead ID to the `req` object for downstream use
+        req.userLeadId = userLead._id.toString();
+
+        // Call the next middleware or route handler
+        next();
+    } catch (error) {
+        res.status(401);
+        throw new Error("Not Authorized! Invalid token");
+    }
+});
 
 // // Admin Route
 // const admin = (req, res, next) => {
@@ -84,5 +85,5 @@ const protect = asyncHandler(async (req, res, next) => {
 //     next();
 // };
 
-// export { protect, admin, aadhaarMiddleware, requireSessionToken };
-export { protect };
+export { protect, aadhaarMiddleware, requireSessionToken };
+// export { protect };

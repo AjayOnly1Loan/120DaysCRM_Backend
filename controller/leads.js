@@ -66,22 +66,18 @@ export const getAllLeads = asyncHandler(async (req, res) => {
     });
 });
 
-
 // @desc Get a lead
 // @route GET /api/leads/:id
 // @access Private
 export const getLead = asyncHandler(async (req, res) => {
     const { id } = req.params;
+    const lead = await Lead.findOne({ _id: id });
 
-    if( !id){
-        return 
+    if (!lead) {
+        res.status(404);
+        throw new Error("Lead not found!!");
     }
-
-    console.log("the id is",id)
-    const lead = await Lead.findOne( { _id : id});
-    console.log(lead)
     return res.json({
         lead,
     });
-
 });
