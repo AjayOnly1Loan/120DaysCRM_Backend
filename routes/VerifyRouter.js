@@ -12,6 +12,11 @@ import {
 //     savePanDetails,
 //     panAadhaarLink,
 // } from "../Controllers/panController.js";
+import {
+    getPanDetails,
+    savePanDetails,
+    panAadhaarLink,
+} from "../controller/pan.js";
 // import {
 //     emailVerify,
 //     verifyEmailOtp,
@@ -48,11 +53,11 @@ router
 // router.patch("/email-otp/:id", protect, verifyEmailOtp);
 
 // pan verify
-// router
-//     .route("/pan/:id")
-//     .get(protect, getPanDetails)
-//     .post(protect, savePanDetails);
-// router.post("/pan-aadhaar-link/:id", panAadhaarLink);
+router
+    .route("/pan/:id")
+    .get(protect, getPanDetails)
+    .post(protect, savePanDetails);
+router.post("/pan-aadhaar-link/:id", panAadhaarLink);
 
 // fetch CIBIL
 // router.get("/equifax/:id", protect, fetchCibil);
