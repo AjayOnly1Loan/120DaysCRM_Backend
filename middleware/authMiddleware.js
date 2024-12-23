@@ -1,6 +1,7 @@
 import asyncHandler from "./asyncHandler.js";
 import jwt from "jsonwebtoken";
 import Employee from "../model/Employee.js";
+import Lead from "../model/Lead.js";
 
 // Protected Routes
 const protect = asyncHandler(async (req, res, next) => {
@@ -48,6 +49,8 @@ function requireSessionToken(req, res, next) {
 const aadhaarMiddleware = asyncHandler(async (req, res, next) => {
     const token = req.session.token;
 
+    console.log('sessinnnnnnnnn',req.session.token)
+
     if (!token) {
         res.status(401);
         throw new Error("Unathorized, no token found!!");
@@ -57,8 +60,10 @@ const aadhaarMiddleware = asyncHandler(async (req, res, next) => {
         // Decode the token using the secret
         const decoded = jwt.verify(token, process.env.AADHAAR_LINK_SECRET);
 
+        console.log('decode',decoded)
+
         // Fetch the user lead using the decoded token's `_id`
-        const userLead = await Lead.findById(decoded._id);
+        const userLead = await Lead.findById(decoded.id);
 
         if (!userLead) {
             res.status(404);

@@ -22,8 +22,8 @@ export const generateAadhaarLink = asyncHandler(async (req, res) => {
     console.log(req.session);
 
     const customerName = `${fName}${mName && ` ${mName}`} ${lName}`;
-    // const link = `https://crm.120daysfinance.com/verify-aadhaar`;
-    const link = `http://localhost:8081/verify-aadhaar`;
+    const link = `https://crm.120daysfinance.com/verify-aadhaar`;
+    // const link = `http://localhost:8081/verify-aadhaar`;
     // const result = await aadhaarKyc(lead.mobile, lead.fName, lead.lName, link);
 
     // if (result.data.ErrorMessage === "Success") {
@@ -62,9 +62,10 @@ export const aadhaarOtp = asyncHandler(async (req, res) => {
     }
 
     // Call the function to generate OTP using Aaadhaar number
-    const response = await generateAadhaarOtp(id, aadhaar);
+    const response = await generateAadhaarOtp( aadhaar);
 
     // res.render('otpRequest',);
+
 
     res.json({
         success: true,
@@ -147,8 +148,8 @@ export const checkAadhaarDetails = asyncHandler(async (req, res) => {
     const { id } = req.params;
 
     const lead = await Lead.findById(id);
-    const { fName, aadhaar } = lead;
-    const uniqueId = `${fName.toLowerCase()}${aadhaar.slice(-4)}`;
+    const { fullName, aadhaar } = lead;
+    const uniqueId = `${fullName.split(" ")[0].toLowerCase()}${aadhaar.slice(-4)}`;
     const data = await AadhaarDetails.findOne({ uniqueId });
 
     res.json({
