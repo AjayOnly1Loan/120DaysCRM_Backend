@@ -14,6 +14,7 @@ const protect = asyncHandler(async (req, res, next) => {
                 "-password"
             );
 
+
             if (!req.employee) {
                 res.status(404);
                 throw new Error("Employee not found");
@@ -23,6 +24,7 @@ const protect = asyncHandler(async (req, res, next) => {
                 res.status(401);
                 throw new Error("Your account is deactivated");
             }
+
             next();
         } catch (error) {
             res.status(401);
@@ -36,7 +38,6 @@ const protect = asyncHandler(async (req, res, next) => {
 
 function requireSessionToken(req, res, next) {
     if (!req.session.token) {
-        console.log("session: ", req.session);
 
         res.status(403);
         throw new Error("No token found!!!");
@@ -49,7 +50,6 @@ function requireSessionToken(req, res, next) {
 const aadhaarMiddleware = asyncHandler(async (req, res, next) => {
     const token = req.session.token;
 
-    console.log('sessinnnnnnnnn',req.session.token)
 
     if (!token) {
         res.status(401);
@@ -60,7 +60,6 @@ const aadhaarMiddleware = asyncHandler(async (req, res, next) => {
         // Decode the token using the secret
         const decoded = jwt.verify(token, process.env.AADHAAR_LINK_SECRET);
 
-        console.log('decode',decoded)
 
         // Fetch the user lead using the decoded token's `_id`
         const userLead = await Lead.findById(decoded.id);

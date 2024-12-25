@@ -57,7 +57,7 @@ const leadSchema = new mongoose.Schema(
         isAadhaarVerified: { type: Boolean, default: false },
         isAadhaarDetailsSaved: { type: Boolean, default: false },
         isPanVerified: { type: Boolean, default: false },
-        sendToAllCloud: { type: Boolean, default: false },
+        sentToAllCloud: { type: Boolean, default: false },
         source: {
             type: String,
             required: true,
