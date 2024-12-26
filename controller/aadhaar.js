@@ -22,8 +22,8 @@ export const generateAadhaarLink = asyncHandler(async (req, res) => {
     console.log(req.session);
 
     const customerName = `${fName}${mName && ` ${mName}`} ${lName}`;
-    const link = `https://api.120daysfinance.com/verify-aadhaar`;
-    // const link = `http://localhost:8081/verify-aadhaar`;
+    // const link = `https://api.120daysfinance.com/verify-aadhaar`;
+    const link = `http://localhost:8081/verify-aadhaar`;
     // const result = await aadhaarKyc(lead.mobile, lead.fName, lead.lName, link);
 
     // if (result.data.ErrorMessage === "Success") {

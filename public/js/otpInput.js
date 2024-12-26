@@ -1,3 +1,6 @@
+document.addEventListener("DOMContentLoaded",() => {
+
+
 // Auto-focus logic for OTP inputs
 const inputs = document.querySelectorAll(".otp-input input");
 inputs.forEach((input, index) => {
@@ -55,13 +58,15 @@ function getIdFromUrl() {
 
 // Handle OTP submission
 async function submitOTP(event) {
+    console.log('submit otp')
     event.preventDefault(); // Prevent form default submission
+    const otpSubmitBtn = document.querySelector("#otpSubmitBtn")
+    console.log('otp submit button', otpSubmitBtn)
+    // Disable the button and show the loader
+    otpSubmitBtn.disabled = true;
+    otpSubmitBtn.textContent = "Requesting...";
 
-    const aadhaarId = getIdFromUrl(); // Extract Aadhaar ID from the URL
-    if (!aadhaarId) {
-        alert("Aadhaar ID not found in URL.");
-        return;
-    }
+
 
     // Gather OTP digits
     const inputs = document.querySelectorAll(".otp-input input");
@@ -101,8 +106,14 @@ async function submitOTP(event) {
     } catch (error) {
         console.error("Error during OTP submission:", error);
         alert("An error occurred. Please try again later.");
+    } finally {
+        // Re-enable the button and reset its text
+        otpSubmitBtn.disabled = false;
+        otpSubmitBtn.textContent = "Submit";
     }
 }
 
 // Attach event listener to the form
 document.getElementById("otpForm").addEventListener("submit", submitOTP);
+
+})

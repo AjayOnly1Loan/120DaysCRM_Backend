@@ -10,8 +10,10 @@ router.route("/:id").get(protect, getLead);
 // router.patch("/send/:id", protect, recommendLead);
 
 // send lead to Allcloud
-
 router.route("/sendDataToAllcloud/:id").post(protect, sendDataToAllcloud)
+
+// Edit lead
+router.route("/updateLead/:id").patch(protect,)
 
 // Forwarded Leads 
 router.route("/forwarded-leads").get(protect, forwardedLeads)

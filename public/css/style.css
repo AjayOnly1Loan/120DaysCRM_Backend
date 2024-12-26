@@ -8,6 +8,12 @@ body {
     min-height: 100vh;
     margin: 0;
   }
+  #requestOtpBtn{
+    cursor: pointer;
+  }
+  #otpSubmitBtn{
+    cursor: pointer;
+  }
   
   .otp-container {
     background: #b6b8b8;

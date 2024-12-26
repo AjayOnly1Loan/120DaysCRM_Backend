@@ -6,19 +6,18 @@ function getIdFromUrl() {
 
 // Function to request OTP
 async function requestOtp() {
-    const aadhaarId = getIdFromUrl();
-    if (!aadhaarId) {
-        alert("Invalid Aadhaar verification link.");
-        return;
-    }
+  const requestButton = document.querySelector("#requestOtpBtn")
+  // Disable the button and show the loader
+  requestButton.disabled = true;
+  requestButton.textContent = "Requesting...";
 
     try {
+        // request for otp
         const response = await fetch(`/api/verify/aadhaar`);
         const result = await response.json();
 
         if (response.ok && result.success) {
             alert("OTP sent successfully! Redirecting to OTP page...");
-            console.log("res", result);
             const { codeVerifier, transactionId, fwdp } = result;
             const aadhaarInfo = {
                 codeVerifier,
@@ -27,7 +26,6 @@ async function requestOtp() {
             };
 
             localStorage.setItem("aadhaarInfo", JSON.stringify(aadhaarInfo));
-            console.log(localStorage.getItem("aadhaarInfo"));
             window.location.href = `/otp-page`;
         } else {
             alert(result.message || "Failed to request OTP. Please try again.");
@@ -35,7 +33,11 @@ async function requestOtp() {
     } catch (error) {
         console.error("Error requesting OTP:", error);
         alert("An error occurred. Please try again later.");
-    }
+    } finally {
+        // Re-enable the button and reset its text
+        requestButton.disabled = false;
+        requestButton.textContent = "Request OTP";
+      }
 }
 
 // Attach event listener to the button

@@ -250,3 +250,20 @@ export const forwardedLeads = asyncHandler(async (req, res) => {
         leads,
     });
 });
+
+
+// @desc Create loan leads
+// @route POST /api/leads/updateLead
+// @access Private
+export const updateLead = asyncHandler(async (req, res) => {
+
+    console.log('update lead',req.body)
+
+    // const existingLead = await Lead.findById()
+   
+
+   
+    return res.json({ message:"updated" });
+});
+
+
