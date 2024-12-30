@@ -40,9 +40,9 @@ router.route("/generate-link/:id").get(generateAadhaarLink);
 
 // aadhaar verify
 // router.post('/aadhaar/:id');
-router.route("/aadhaar").get( aadhaarOtp);
+router.route("/aadhaar/:id").get( aadhaarOtp);
 // Aadhaar OTP submitted by Borrower
-router.post("/submit-aadhaar-otp",  saveAadhaarDetails);
+router.post("/submit-aadhaar-otp/:id",  saveAadhaarDetails);
 router
     .route("/verifyAadhaar/:id")
     .get(protect, checkAadhaarDetails)
