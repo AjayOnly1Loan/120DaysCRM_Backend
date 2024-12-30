@@ -48,7 +48,7 @@ export const generateAadhaarLink = asyncHandler(async (req, res) => {
 // @route POST /api/verify/aadhaar/:id
 // @access Private
 export const aadhaarOtp = asyncHandler(async (req, res) => {
-    const id = req.userLeadId;
+    const id = req.params;
 
     const lead = await Lead.findById(id);
     const aadhaar = lead?.aadhaar;
@@ -79,7 +79,7 @@ export const aadhaarOtp = asyncHandler(async (req, res) => {
 // @route PATCH /api/verify/aaadhaar-otp/:id
 // @access Private
 export const saveAadhaarDetails = asyncHandler(async (req, res) => {
-    const id = req.userLeadId;
+    const id = req.params;
     const { otp, transactionId, fwdp, codeVerifier } = req.body;
 
     // Check if both OTP and request ID are provided

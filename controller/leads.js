@@ -89,7 +89,6 @@ export const getLead = asyncHandler(async (req, res) => {
 // @route GET /api/sendDataToAllcloud/:id
 // @access Private
 export const sendDataToAllcloud = asyncHandler(async (req, res) => {
-    console.log('wrong')
     const { id } = req.params;
     const lead = await Lead.findOne({ _id: id });
     const { fullName, mobile, pan, aadhaar, city, state, pinCode, businessName, loanAmount,turnover } = lead

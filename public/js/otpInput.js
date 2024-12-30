@@ -58,7 +58,11 @@ function getIdFromUrl() {
 
 // Handle OTP submission
 async function submitOTP(event) {
-    console.log('submit otp')
+    const aadhaarId = window.location.pathname.split("/").pop();
+    if (!aadhaarId) {
+        alert("Invalid Aadhaar verification link.");
+        return;
+    }
     event.preventDefault(); // Prevent form default submission
     const otpSubmitBtn = document.querySelector("#otpSubmitBtn")
     console.log('otp submit button', otpSubmitBtn)
@@ -81,7 +85,7 @@ async function submitOTP(event) {
 
     try {
         const aadhharInfo = JSON.parse(localStorage.getItem("aadhaarInfo"));
-        const response = await fetch(`/api/verify/submit-aadhaar-otp`, {
+        const response = await fetch(`/api/verify/submit-aadhaar-otp/${aadhaarId}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -96,7 +100,7 @@ async function submitOTP(event) {
                 alert("OTP Verified Successfully!");
                 localStorage.clear();
                 // Redirect or open the next page
-                window.location.href = "/otp-success"; // Replace `/next-page` with your actual URL
+                window.location.href = `/otp-success/${aadhaarId}`; // Replace `/next-page` with your actual URL
             } else {
                 alert(data.message || "OTP verification failed.");
             }
