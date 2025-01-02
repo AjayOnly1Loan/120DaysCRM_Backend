@@ -3,6 +3,8 @@ import asyncHandler from "../middleware/asyncHandler.js";
 import Lead from "../model/Lead.js";
 import jsonminify from "jsonminify"
 import AadhaarDetails from "../model/AadhaarDetails.js";
+import { createBorrower } from "../utils/generateBorrower.js";
+import { createAllCloudLead } from "../utils/createAllCloudLead.js";
 
 // @desc Create loan leads
 // @route POST /api/leads
@@ -91,131 +93,27 @@ export const getLead = asyncHandler(async (req, res) => {
 export const sendDataToAllcloud = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const lead = await Lead.findOne({ _id: id });
-    const { fullName, mobile, pan, aadhaar, city, state, pinCode, businessName, loanAmount,turnover } = lead
-    const uniqueId = `${fullName.split(" ")[0].toLowerCase()}${aadhaar.slice(-4)}`
-    const aadhaarDetails = await AadhaarDetails.findOne({ uniqueId: uniqueId })
-    const updatedDOB = aadhaarDetails.details.dob.split("-").reverse().join("-")
-    const minifiedBorrower = jsonminify(JSON.stringify({
-        CustomerId: 0,
-        FirstName: fullName.split(" ")[0],
-        LastName: fullName.split(" ").slice(1).join(" "),
-        DOB: updatedDOB,
-        ContactNumber: Number(mobile),
-        AadarCard: aadhaar,
-        PANCard: pan,
-        FatherName: "",
-        Gender: 0,
-        BankNo: "",
-        BankDetailId: "",
-        IFSCCode: "",
-        BranchName: "",
-        BankName: "",
-        BankAccountName: "",
-        PrimaryAddressLine1: city,
-        PrimaryArea: city,
-        PrimaryTown: city,
-        PrimaryPostcode: pinCode.toString(),
-        PrimaryStateId: "01",
-    }))
-
-
-
-
-    const getAuthToken = async (url,data) => {
-        const headers = {
-            "Content-Type": "application/json",
-            "appid": process.env.APP_ID,
-            "secrettoken": process.env.SECRET_TOKEN,
-            "usertoken": process.env.USER_TOKEN,
-            "x-api-key": process.env.X_API_KEY,
-            "url": url
-        }
-
-        const tokenRes = await axios.post(`https://uat-auth-ace.allcloud.app/enterprise-generatetoken`, data, { headers })
-        return tokenRes.data
+    if (!lead) {
+        res.status(404);
+        throw new Error("Lead not found!!");
     }
+    const uniqueId = `${lead.fullName.split(" ")[0].toLowerCase()}${lead.aadhaar.slice(-4)}`
+    const aadhaarDetails = await AadhaarDetails.findOne({ uniqueId })
 
-    const borrowerToken = await getAuthToken("https://staging.allcloud.in/apiv2pawansut/api/Customer/SaveCustomerData",minifiedBorrower)
+    const createdBorrower = await createBorrower(lead, aadhaarDetails)
 
-
-
-    const createdBorrower = await axios.post(`https://staging.allcloud.in/apiv2pawansut/api/Customer/SaveCustomerData`, minifiedBorrower, {
-        headers: {
-            "Authorization": borrowerToken,
-            "Content-Type": "application/json"
-        }
-    })
-
-    const minifiedLead = jsonminify(JSON.stringify({
-        LeadDetailId: 0,
-        ProductTypeId: "BusinessLoan",
-        LoanState: 0,
-        LoanAmount: loanAmount,
-        LoanTenure: 4,
-        LoanCategoryId: "General",
-        CompanyRoleId: 198,
-        CentreName: "Default Centre",
-        LeadSourceId: 3,
-        LeadSourceDetailId: 2,
-        PurposeofLoan: "Business Activities",
-        SchemeId: 3,
-        LoanSegmentId: "General",
-        SubmitLead: true,
-        DealerId: null,
-        lstLeadCustomers: [
-            {
-                BorrowerId: createdBorrower.data.CustomerId,
-                BorrowerTypeId: 0,
-                OrderTypeId: 0,
-                RelationToBorrower: 53
-            }
-        ],
-        PLSalaryBorrower: null,
-        objPLOrganizationBorrowerDTO: {
-            PLOrganizationBorrowerId: 0,
-            OrganizationName: businessName,
-            AnnualProfit: turnover,
-            AddressId: 0,
-            IncorporationDate: "2024-05-12",
-            OrganizationType: "3",
-            Sector: "finance",
-            Designation: null,
-            PAN: null,
-            TAN: null,
-            GST: null,
-            NoOfEmployees: 0,
-            AnnualIncome: turnover,
-            AddressLine1: city,
-            Area: city,
-            Town: city,
-            Postcode: pinCode,
-            StateId: state,
-            Landmark: null,
-            UploadDocumentDTOCollection: null,
-            jsonPLAssetOtherInfo: "N/A"
-        }
-    }))
-
-    const leadToken = await getAuthToken("https://staging.allcloud.in/apiv2pawansut/api/LeadDetail/AddLeadDetail",minifiedLead)
-    console.log("lead Token",leadToken)
-
-    const createdLead = await axios.post(`https://staging.allcloud.in/apiv2pawansut/api/LeadDetail/AddLeadDetail`, minifiedLead, {
-        headers: {
-            "Authorization": leadToken,
-            "Content-Type": "application/json"
-        }
-    })
+    console.log('created borrower', createdBorrower)
+    const createdLead = await createAllCloudLead(lead, createdBorrower)
+    lead.sentToAllCloud = true
+    await lead.save()
 
     console.log('lead created', createdLead)
 
 
 
-    if (!lead) {
-        res.status(404);
-        throw new Error("Lead not found!!");
-    }
+    
     return res.json({
-        token: createdLead.data,
+        message: "lead Forwarded",
     });
 });
 
@@ -256,13 +154,12 @@ export const forwardedLeads = asyncHandler(async (req, res) => {
 // @access Private
 export const updateLead = asyncHandler(async (req, res) => {
 
-    console.log('update lead',req.body)
 
     // const existingLead = await Lead.findById()
-   
 
-   
-    return res.json({ message:"updated" });
+
+
+    return res.json({ message: "updated" });
 });
 
 
